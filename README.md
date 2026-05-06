@@ -4,6 +4,36 @@ A lightweight, purely mathematical implementation of a 3-layer Artificial Neural
 
 The model is trained on the classic [MNIST dataset](http://yann.lecun.com/exdb/mnist/) to classify handwritten digits (0-9).
 
+## 🏗️ Architecture
+
+```mermaid
+graph TD
+    A["🖼️ Input Image\n28×28 px (PNG / CSV)"] --> B["🔄 Preprocessing\nnormalize · reshape → 784"]
+    B --> C["📥 Input Layer\n784 nodes"]
+
+    C --> D["⚙️ Hidden Layer\n100 nodes\nSigmoid activation"]
+
+    D --> E["📤 Output Layer\n10 nodes · digits 0–9"]
+
+    E --> F{"Training?"}
+
+    F -- "Yes" --> G["📉 Backpropagation\nGradient Descent"]
+    G --> H["🔁 Update Weights\nW_ih  ·  W_ho"]
+    H --> C
+
+    F -- "No" --> I["✅ Prediction\nargmax → digit class"]
+
+    subgraph Data["📂 Data Pipeline"]
+        J["Auto-Download\nmnist_train_60K.csv\nmnist_test10K.csv"] --> K["🔀 Augmentation\nRotate ±10°"]
+        K --> A
+    end
+
+    subgraph Extras["🔬 Extra Features"]
+        I --> L["🖼️ Custom Image Test\nyour own PNG"]
+        E --> M["🔙 Backquerying\nReverse pass → visual digit"]
+    end
+```
+
 ## 🌟 Features
 - **Built from Scratch:** Core math logic written entirely using `numpy` (forward and backward propagation).
 - **Data Augmentation:** Automatically augments training data by rotating images ±10 degrees to improve robustness and prevent overfitting.
